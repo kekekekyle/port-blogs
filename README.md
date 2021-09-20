@@ -1,6 +1,6 @@
 # Blogs
 
-A full stack web application written with React and Node.js. After a user is authenticated with JSON web tokens, users can create blog posts, like other blog posts, and leave comments. Features the React router, custom hooks, CSS styling, and webpack. Full CI/CD deployment pipeline workflow implemented with GitHub Actions which features linting, building, end-to-end testing, and deployment to Heroku. 
+A full stack web application written with React and Express.js. After a user is authenticated, users can create blog posts, like blog posts, and leave comments. Features the React router, custom hooks, CSS styling, and webpack. Full CI/CD deployment pipeline workflow implemented with GitHub Actions which features linting, building, end-to-end testing, and deployment to Heroku. 
 
 An example is hosted here: https://fast-coast-67820.herokuapp.com
 
