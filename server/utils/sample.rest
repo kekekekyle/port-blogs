@@ -1,0 +1,48 @@
+post http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "kekekekyle",
+  "password": "password"
+}
+
+####
+post http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "a_new_user",
+  "password": "password"
+}
+
+#### correct user
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtla2VrZWt5bGUiLCJpZCI6IjYxMDU2M2IwNjM2M2E0MmJiYjcxMTRmMiIsImlhdCI6MTYyNzc2Njg2NiwiZXhwIjoxNjI3NzcwNDY2fQ.ni2YrzHYop7oBTulyvCbJULykSCxZCwLRTgk3-B96To
+
+{
+  "title": "another new blog",
+  "author": "captain planet",
+  "url": "www.ytmnd.com"
+}
+
+#### correct user
+delete http://localhost:3003/api/blogs/6105c06e7403b96739dd8a93
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imtla2VrZWt5bGUiLCJpZCI6IjYxMDU2M2IwNjM2M2E0MmJiYjcxMTRmMiIsImlhdCI6MTYyNzc2Njg2NiwiZXhwIjoxNjI3NzcwNDY2fQ.ni2YrzHYop7oBTulyvCbJULykSCxZCwLRTgk3-B96To
+
+#### wrong user
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFfbmV3X3VzZXIiLCJpZCI6IjYxMDU2ZGJkM2ZmZWRkMzZjMDhkNjIwMyIsImlhdCI6MTYyNzc2NTU3OSwiZXhwIjoxNjI3NzY5MTc5fQ.ztiPmkG77mprErdzJbHtzcH2d41z2dXbQxYLyu9vt5Q
+
+{
+  "title": "another new blog",
+  "author": "captain planet",
+  "url": "www.ytmnd.com"
+}
+
+#### wrong user
+delete http://localhost:3003/api/blogs/6105c0c27403b96739dd8aa4
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFfbmV3X3VzZXIiLCJpZCI6IjYxMDU2ZGJkM2ZmZWRkMzZjMDhkNjIwMyIsImlhdCI6MTYyNzc2NzAyNCwiZXhwIjoxNjI3NzcwNjI0fQ.pmKsbucgcgkXJj8ZrxDekXhbbd2T39YG_lcfaBrN1lM

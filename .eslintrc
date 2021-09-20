@@ -1,0 +1,37 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:cypress/recommended"
+  ],
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest/globals": true,
+    "es6": true
+  },
+  "plugins": [
+    "react",
+    "cypress",
+    "jest"
+  ],
+  "rules": {
+    "cypress/no-unnecessary-waiting": "warn",
+    "semi": [
+      "error",
+      "never"
+    ],
+    "max-len": [1, 200],
+    "no-shadow": 0,
+    "no-plusplus": 0,
+    "import/no-unresolved": "off",
+    "react/jsx-filename-extension": "off",
+    "react/prop-types": [
+      1,
+      {
+        "skipUndeclared": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,70 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Create env file
+        run: |
+          cat << EOF >> .env
+          MONGODB_URI=${{ secrets.MONGODB_URI }}
+          TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }}
+          SECRET=${{ secrets.SECRET }}
+          EOF
+      - name: npm install 
+        run: npm install  
+      - name: lint
+        run: npm run lint
+      - name: build
+        run: npm run build
+      - name: test
+        run: npm run test
+      - name: e2e tests
+        uses: cypress-io/github-action@v2
+        with:
+          command: npm run cypress:run
+          start: npm run start:test
+          wait-on: http://localhost:8000
+      - if: ${{ github.event_name == 'push' }}
+        name: deploy
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "fast-coast-67820"
+          heroku_email: "fang.kyle@gmail.com"
+          healthcheck: "https://fast-coast-67820.herokuapp.com/api/health"
+          checkstring: "ok"
+          rollbackonhealthcheckfailed: true
+      - uses: actions/checkout@v2
+      - if: ${{ github.event_name == 'push' && contains(join(toJson(github.event.commits.*.message)), '#skip') == 'false' }}
+        name: Bump version and push tag
+        uses: anothrNick/github-tag-action@eca2b69f9e2c24be7decccd0f15fdb1ea5906598
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took # selectable (default: repo,message)
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: ${{ failure() }} # Pick up events even if the job fails or is canceled.
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: author,eventName,job,took # selectable (default: repo,message)
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: ${{ success() }} # Pick up events even if the job fails or is canceled.
